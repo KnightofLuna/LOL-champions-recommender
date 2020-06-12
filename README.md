@@ -65,7 +65,7 @@ Moreover, this recommender consists of a score system based on the strength of c
 champion_data = game_data.iloc[:,1:].groupby('Champion').mean()
 champion_data.head()
 ```
->|Champion|Game time|Result|KillsPM|DeathsPM|AssistsPM|CSM|GPM|DPM|HPM|DTPM|
+|Champion|Game time|Result|KillsPM|DeathsPM|AssistsPM|CSM|GPM|DPM|HPM|DTPM|
 |----|----|----|----|----|----|----|----|----|----|----|
 |Aatrox|32.453249|0.500000|0.074642|0.076892|0.125133|7.952284|376.769036|360.276650|328.170685|756.168021|
 |Ahri|31.317500|0.750000|0.032675|0.006482|0.238946|8.450000|368.250000|365.250000|127.629706|346.269217|
@@ -85,7 +85,7 @@ role_prob.columns = [x + '_prob' for x in role_prob.columns.levels[1]]
 champion_data = pd.concat([champion_data,role_prob], axis=1)
 champion_data.head()
 ```
->|Champion|ADC_prob| JUNGLE_prob|MID_prob|SUPPORT_prob|TOP_prob|
+|Champion|ADC_prob| JUNGLE_prob|MID_prob|SUPPORT_prob|TOP_prob|
 |----|----|----|----|----|----|
 |Aatrox|0.0|0.098985|0.083756|0.0|0.817259|
 |Ahri|0.0|0.000000|1.000000|0.0|0.000000|
@@ -121,7 +121,7 @@ stage_win['Late'] = Late
 champion_data = pd.concat([champion_data,stage_win], axis=1)
 champion_data.head()
 ```
->|Champion|Early|Early-to-middle|Middle|Middle-to-late|Late|
+|Champion|Early|Early-to-middle|Middle|Middle-to-late|Late|
 |----|----|----|----|----|----|
 |Aatrox|0.470588|0.495798|0.498141|0.515924|0.506849|
 |Ahri|0.460788|1.000000|1.000000|0.000000|0.485682|
@@ -139,7 +139,7 @@ ftr_champion_data.shape
 (100, 20)
 ```
 
-<img src="/img/algorithm.png">
+![](:/img/algorithm.png)
 
 ## 3. 英雄相似度
 
@@ -160,7 +160,7 @@ data = similar_champions('Sett')
 HTML_show(data)
 ```
 
->|Champion|Photo|Similarity|
+|Champion|Photo|Similarity|
 |----|----|----|		
 |Ornn|<img src="https://gol.gg/_img/champions_icon/Ornn.png">|0.999863|
 |Kled|<img src="https://gol.gg/_img/champions_icon/Kled.png">|0.999015|
@@ -214,7 +214,7 @@ output = scores_comparison(team1, team2)
 HTML_show(output)
 ```
 
->|Team|Champion|Photo|Early|Early-to-middle|Middle|Middle-to-late|Late|
+|Team|Champion|Photo|Early|Early-to-middle|Middle|Middle-to-late|Late|
 |----|----|----|----|----|----|----|----|
 |Team 1|Ornn|<img src="https://gol.gg/_img/champions_icon/Ornn.png">|0.500000|0.523256|0.542056|0.578947|0.463415|
 |Team 1|Olaf|<img src="https://gol.gg/_img/champions_icon/Olaf.png">|0.600000|0.531250|0.539568|0.510000|0.439024|
@@ -256,7 +256,7 @@ counters = find_counters('Sett')
 HTML_show(counters)
 ```
 
->|Champion|Photo|Counter Rate|
+|Champion|Photo|Counter Rate|
 |----|----|----|
 |Trundle|<img src="https://gol.gg/_img/champions_icon/Trundle.png">|0.800000|
 |LeBlanc|<img src="https://gol.gg/_img/champions_icon/LeBlanc.png">|0.760000|
@@ -402,58 +402,22 @@ The phase (one of Early, Early-to-middle, Middle, Middle-to-late, Late) you conc
 ```
 11. 输出...
 ```
-                              Champion  \
-Early-to-middle Score                    
-0.541377              TOP      Sett      
-                      JUNGLE   Olaf      
-                      MID      Ryze      
-                      ADC      Ashe      
-                      SUPPORT  Alistar   
-0.540333              TOP      Sett      
-                      JUNGLE   Olaf      
-                      MID      Syndra    
-                      ADC      Ashe      
-                      SUPPORT  Thresh    
-0.538972              TOP      Sett      
-                      JUNGLE   Olaf      
-                      MID      Azir      
-                      ADC      Ashe      
-                      SUPPORT  Thresh    
-
-                                                                 Top Similars & Similarity  \
-Early-to-middle Score                                                                        
-0.541377              TOP      [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                  
-                      JUNGLE   [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]        
-                      MID      [(Kennen, 0.999), (Neeko, 0.999), (Lissandra, 0.998)]         
-                      ADC      [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]               
-                      SUPPORT  [(Tahm Kench, 0.998), (Skarner, 0.996), (Jarvan IV, 0.993)]   
-0.540333              TOP      [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                  
-                      JUNGLE   [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]        
-                      MID      [(Caitlyn, 0.999), (VelKoz, 0.998), (KogMaw, 0.998)]          
-                      ADC      [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]               
-                      SUPPORT  [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]       
-0.538972              TOP      [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                  
-                      JUNGLE   [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]        
-                      MID      [(Corki, 0.999), (Orianna, 0.999), (Jayce, 0.998)]            
-                      ADC      [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]               
-                      SUPPORT  [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]       
-
-                                           Top Counters & Counter Rate  
-Early-to-middle Score                                                   
-0.541377              TOP      [(Trundle, 0.8), (LeBlanc, 0.76)]        
-                      JUNGLE   [(Elise, 0.636), (LeBlanc, 0.619)]       
-                      MID      [(Alistar, 0.759), (Gragas, 0.688)]      
-                      ADC      [(Sylas, 0.762), (RekSai, 0.714)]        
-                      SUPPORT  [(Rakan, 0.675), (Lissandra, 0.603)]     
-0.540333              TOP      [(Trundle, 0.8), (LeBlanc, 0.76)]        
-                      JUNGLE   [(Elise, 0.636), (LeBlanc, 0.619)]       
-                      MID      [(LeBlanc, 0.708), (Ryze, 0.63)]         
-                      ADC      [(Sylas, 0.762), (RekSai, 0.714)]        
-                      SUPPORT  [(Tahm Kench, 0.661), (Sejuani, 0.645)]  
-0.538972              TOP      [(Trundle, 0.8), (LeBlanc, 0.76)]        
-                      JUNGLE   [(Elise, 0.636), (LeBlanc, 0.619)]       
-                      MID      [(Taric, 0.655), (Rakan, 0.652)]         
-                      ADC      [(Sylas, 0.762), (RekSai, 0.714)]        
-                      SUPPORT  [(Tahm Kench, 0.661), (Sejuani, 0.645)]
+                              Champion                                    Top Similars & Similarity              Top Counters & Counter Rate
+Early-to-middle Score                                                                                                                       
+0.541377              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
+                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
+                      MID      Ryze     [(Kennen, 0.999), (Neeko, 0.999), (Lissandra, 0.998)]        [(Alistar, 0.759), (Gragas, 0.688)]    
+                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
+                      SUPPORT  Alistar  [(Tahm Kench, 0.998), (Skarner, 0.996), (Jarvan IV, 0.993)]  [(Rakan, 0.675), (Lissandra, 0.603)]   
+0.540333              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
+                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
+                      MID      Syndra   [(Caitlyn, 0.999), (VelKoz, 0.998), (KogMaw, 0.998)]         [(LeBlanc, 0.708), (Ryze, 0.63)]       
+                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
+                      SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
+0.538972              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
+                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
+                      MID      Azir     [(Corki, 0.999), (Orianna, 0.999), (Jayce, 0.998)]           [(Taric, 0.655), (Rakan, 0.652)]       
+                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
+                      SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
 ```
 
