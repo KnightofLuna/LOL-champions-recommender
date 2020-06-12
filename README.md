@@ -5,9 +5,25 @@ This project purposed a League of Legends (LOL) recommender system for champions
 Moreover, this recommender consists of a score system based on the strength of champions in different phases for evaluating teams, a similarity evaluation for seeking alternative champions and a counter evaluation for detecting counters for each champion of a team. 
 
 ## Version:
-* [中文](../README.md)
-* [English](../README-en.md)
+* 中文
+* English (to be implemented...)
 
+## 目录：
+
+* [0. 写在前面](#0)
+* [1. 数据预览](#1)
+* [2. 数据处理和计算](#2)
+    * [2.1 计算各英雄的平均表现](#2.1)
+    * [2.2 计算各英雄被选在某位置的概率](#2.2)
+    * [2.3 计算各英雄不同时段胜率](#2.3)
+    * [2.4 过滤掉不常见英雄](#2.4)
+* [3. 英雄相似度](#3)
+* [4. 阵容评分](#4)
+* [5. 英雄克制](#5)
+* [6. 推荐器](#6)
+* [7. 使用方法](#7)
+
+<a id="0"></a>
 ## 0. 写在前面
 
 作者是一个S3入坑的撸啊撸老玩家，写这篇文章一是是出于老粉的热爱，二是作为一个练手的Python项目。
@@ -16,10 +32,11 @@ Moreover, this recommender consists of a score system based on the strength of c
 
 另一方面，如果仅仅是靠查询，即在过往比赛数据中查找包含给定英雄子集的记录，这样查找的结果肯定是较为有限的，甚至如果给定较多英雄，比如3到4个，意味着条件更加苛刻，最终可能难以找到符合条件的结果。因此，这篇文章引入英雄的相似度分析，目的是为了变相扩充数据集，让推荐器更加灵活。
 
-在给出推荐阵容之后，这个推荐器也给出每个英雄的可替代方案和counter（克制者）。可替代方案目的在于保证所选英雄作用相当的条件下，为玩家提供更多的选择性，也可以在备选英雄被ban的情况下作为plan B。而出counter的目的在于告诉玩家，哪个英雄是你备选英雄（阵容）最大的威胁，进而可以考虑ban掉该英雄。
+在给出推荐阵容之后，这个推荐器也给出每个英雄的替代者和counter（克制者）。可替代方案目的在于保证所选英雄作用相当的条件下，为玩家提供更多的选择性，也可以在备选英雄被ban的情况下作为plan B。而出counter的目的在于告诉玩家，哪个英雄是你备选英雄（阵容）最大的威胁，进而可以考虑ban掉该英雄。
 
-以下仅展示`recommender.py`部分关键代码，全部代码包括爬虫代码请浏览`.py`文件。
+**以下仅展示`recommender.py`部分关键代码，全部代码包括爬虫代码请浏览`.py`文件。**
 
+<a id="1"></a>
 ## 1. 数据预览
 
 这篇文章的数据集是通过爬虫，在[Games of Legend](https://gol.gg/tournament/list/region-ALL/league-1/)获取的赛事数据，因为只是一个小的demo，所以爬取的数据量不多，时间上只覆盖从S8到S10季中赛之前，赛事上只覆盖LPL、LCK、LEC、LCS、MSI和全球总决赛这些顶级赛事，清洗完后仅有22770条数据，也就是2277场比赛。下面给出前十行数据的预览：
@@ -55,10 +72,12 @@ Moreover, this recommender consists of a score system based on the strength of c
 |HPM|每分钟的治疗值|
 |DTPM|每分钟的承担伤害值|
 
+<a id="2"></a>
 ## 2. 数据处理和计算
 
 用于评价英雄相似度的变量除游戏中的表现外，也要考虑是否是同个位置的英雄，以及是否强势时段比较一致，另外还有比较关键的因素如英雄机制和技能的衡量等，在这篇文章中不做考虑。作为衡量数值之间相似度的方法，这里采用的是```pandas```自带的```.corr()```，即Pearson相关系数。最终结果如果某两个英雄分均击杀、死亡、助攻、补刀、金币、伤害、治疗、扛伤、位置、强势时段越为相似，则相似度的值会越趋近于1。
 
+<a id="2.1"></a>
 ### 2.1 计算各英雄的平均表现
 
 ```Python
@@ -73,6 +92,7 @@ champion_data.head()
 |Alistar|32.690299|0.524457|0.022661|0.094076|0.248639|1.607609|256.130435|116.934783|194.338432|450.023260|
 |Anivia|30.760000|0.666667|0.035891|0.062490|0.078085|9.066667|366.666667|214.000000|83.425731|490.418586|
 
+<a id="2.2"></a>
 ### 2.2 计算各英雄被选在某位置的概率
 
 ```Python
@@ -93,6 +113,7 @@ champion_data.head()
 |Alistar|0.0|0.000000|0.000000|1.0|0.000000|
 |Anivia|0.0|0.000000|1.000000|0.0|0.000000|
 
+<a id="2.3"></a>
 ### 2.3 计算各英雄不同时段胜率
 
 对于时段的划分，这里参考了[技术控](http://jishukong.com/effect)，少于或等于25分钟为“Early”（前期），大于25分钟、少于或等于30分钟为“Early-to-middle”（前中期），大于30分钟、少于或等于35分钟为“Middle”（中期），大于35分钟、少于或等于40分钟为“Middle-to-late”（中后期），大于40分钟为“late”（后期）。
@@ -129,6 +150,7 @@ champion_data.head()
 |Alistar|0.600000|0.583333|0.478632|0.475610|0.555556|
 |Anivia|0.460788|0.500000|0.480454|1.000000|0.485682|
 
+<a id="2.4"></a>
 ### 2.4 过滤掉不常见英雄
 
 对于出现次数少于20次的英雄，弃之。过滤并整合后的数据包含100个常见英雄和20个变量。
@@ -136,14 +158,14 @@ champion_data.head()
 ```Python
 ftr_champion_data = champion_data.loc[presence[presence > 20].index] # drop those champions that appeared less than 20 times out
 ftr_champion_data.shape
+> (100, 20)
 ```
->(100, 20)
 
 <p align="center">
   <img src="./img/cluster_map.png">
 </p>
 
-
+<a id="3"></a>
 ## 3. 英雄相似度
 
 基于Part 2的结果，我们可以直接计算英雄间的相似度。
@@ -156,7 +178,8 @@ def similar_champions(champion, top=5):
     return data
 ```
 
-调用`similar_champions`函数，输入瑟提（Sett），输出与其相似度最高的五个英雄。可以看到有奥恩（Ornn）、克烈（Kled）、波比（Poppy）、赛恩（Sion）和悟空（Wukong）。
+### 例子
+调用`similar_champions`函数，输入`'Sett'`（瑟提），输出与其相似度最高的五个英雄。可以看到有奥恩（Ornn）、克烈（Kled）、波比（Poppy）、赛恩（Sion）和悟空（Wukong）。
 
 ```Python
 data = similar_champions('Sett')
@@ -171,7 +194,7 @@ HTML_show(data)
 |Sion|<img src="https://gol.gg/_img/champions_icon/Sion.png">|0.997352|
 |Wukong|<img src="https://gol.gg/_img/champions_icon/Wukong.png">|0.995487|
  
-
+<a id="4"></a>
 ## 4. 阵容评分
 
 Part 2中得到的不同时段胜率不仅可以用来衡量英雄相似度，也可以用来评价阵容。
@@ -208,6 +231,8 @@ def scores_comparison(team1, team2, plot=True):
     return output
 ```
 
+### 例子
+
 调用`scores_comparison`函数，输入`['Ornn', 'Olaf', 'LeBlanc', 'Miss Fortune', 'Yuumi']`，`['Sett', 'Lee Sin', 'Lissandra', 'Aphelios', 'Thresh']`两个阵容进行比较。可以看出第一个阵容在中后期的平均得分要高过第二个阵容，而第二个阵容在前期有比较高的得分。
 
 ```Python
@@ -216,6 +241,8 @@ team2 = ['Sett', 'Lee Sin', 'Lissandra', 'Aphelios', 'Thresh']
 output = scores_comparison(team1, team2)
 HTML_show(output)
 ```
+
+![](./img/score_comparison.png)
 
 |Team|Champion|Photo|Early|Early-to-middle|Middle|Middle-to-late|Late|
 |----|----|----|----|----|----|----|----|
@@ -230,7 +257,7 @@ HTML_show(output)
 |Team 2|Aphelios|<img src="https://gol.gg/_img/champions_icon/Aphelios.png">|0.400000|0.578125|0.479452|0.403846|0.484848|
 |Team 2|Thresh|<img src="https://gol.gg/_img/champions_icon/Thresh.png">|0.750000|0.583333|0.419355|0.513514|0.464286|
 
-
+<a id="5"></a>
 ## 5. 英雄克制
 
 英雄的克制率计算为：给定一个英雄，计算其与其他英雄的对抗次数和对抗中输的次数，后者除以前者即可得到克制率。同样，为了保证足够的次数，如果对抗次数少于20次则不给予考虑。
@@ -252,7 +279,9 @@ def find_counters(champian, top=5):
     return top_counters
 ```
 
-调用`find_counters`函数，输入瑟提（Sett），输出与对其最为克制的五个英雄。可以看到有特朗德尔（Trundle）、乐芙兰（LeBlanc）、塔里克（Taric）、韦鲁斯（Varus）和嘉文四世（Jarvan IV），其中最高的克制率为0.8，即在过去瑟提和特朗德尔的比赛中，特朗德尔赢下八成的比赛。
+### 例子
+
+调用`find_counters`函数，输入`'Sett'`（瑟提），输出与对其最为克制的五个英雄。可以看到有特朗德尔（Trundle）、乐芙兰（LeBlanc）、塔里克（Taric）、韦鲁斯（Varus）和嘉文四世（Jarvan IV），其中最高的克制率为0.8，即在过去瑟提和特朗德尔的比赛中，特朗德尔赢下八成的比赛。
 
 ```Python
 counters = find_counters('Sett')
@@ -267,7 +296,7 @@ HTML_show(counters)
 |Varus|<img src="https://gol.gg/_img/champions_icon/Varus.png">|0.644444|
 |Jarvan IV|<img src="https://gol.gg/_img/champions_icon/JarvanIV.png">|0.59090|
 
-
+<a id="6"></a>
 ## 6. 推荐器
 
 基于Part 4 其实我们已经能够搭建一个初步的推荐器了。推荐器的算法如下；
@@ -284,7 +313,6 @@ HTML_show(counters)
 ```
 
 这样做的目的在于变相扩充数据集。比如说我们给定ADC是Ashe，SUPPORT是Yummi，而Ashe的相似英雄有Caitlyn，Yummi的相似英雄有Sona，那我们查找的不单是过去包括ADC为Ashe和SUPPORT为Yummi的阵容，还允许ADC为Ashe，SUPPORT为Sona的阵容，或者ADC为Caitlyn，SUPPORT为Sona的阵容...因为他们相似度高，所以我们设想他们在队伍中的作用是等价的，换句话讲，以相似度高的英雄进行替换，对原有的阵容影响不大，这样一来我们可参考的阵容就变得更多了，同时又能一定程度上保证英雄的搭配。
-
 
 ```Python
 def recommender(top=False, jun=False, mid=False, adc=False, sup=False, num=1, expect_stage='Middle'):
@@ -314,7 +342,9 @@ def recommender(top=False, jun=False, mid=False, adc=False, sup=False, num=1, ex
     return recmd_teams.sort_values(by=col_name, ascending=False)[:num].reset_index(drop=True)
 ```
 
-调用`recommender`函数，输入`adc='Ashe'`，`sup='Yuumi'`,输出基于中期平均胜率（默认）的三个推荐阵容。
+### 例子
+
+调用`recommender`函数，输入`adc='Ashe'`，`sup='Yuumi'`, `num=3`,输出基于中期平均胜率（默认）的三个推荐阵容。
 
 ```Python
 top=False
@@ -355,9 +385,14 @@ def merged_recommender(top=False, jun=False, mid=False, adc=False, sup=False,
     return copy
 ```
 
-## 7. 用法
+<a id="7"></a>
+## 7. 使用方法
 
-1. 直接运行`recommender.py`文件，即可使用。假如当前的阵容为：Sett（TOP），Ashe（ADC），其他英雄待选。推荐阵容数量为3，相似英雄数量为3，counters数量为2，评价方式为Early-to-middle。
+直接运行`recommender.py`文件，按照提示输入即可使用。
+
+### 例子
+
+1. 假如当前的阵容为：Sett（TOP），Ashe（ADC），其他英雄待选。推荐阵容数量为3，相似英雄数量为3，counters数量为2，评价方式为`Early-to-middle`。
 
 ```
 $ python recommender.py
@@ -424,3 +459,4 @@ Early-to-middle Score
                       SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
 ```
 
+12. 解读：按照`Early-to-middle`的评价标准，即阵容前中期的评分，输出的阵容依次为`[TOP: Sett, JUNGLE: Olaf, MID: Ryze, ADC: Ashe, SUPPORT: Alistar]`，`[TOP: Sett, JUNGLE: Olaf, MID: Syndra, ADC: Ashe, SUPPORT: Thresh]`，`[TOP: Sett, JUNGLE: Olaf, MID: Azir, ADC: Ashe, SUPPORT: Thresh]`，其对应的评分分别为`0.541377`，`0.540333`，`0.538972`。其次，展示在每个英雄之后的有相似者和克制者。例如`Sett`的最相似的是`Ornn`，相似度为`1`，其次是`Kled`，相似度为`0.999`...`Sett`的最佳克制者为`Trundle`，克制率为`0.8`，其次为`LeBlanc`，克制率为`0.76`...其他英雄以此类推。
