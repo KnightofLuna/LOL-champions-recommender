@@ -136,10 +136,10 @@ champion_data.head()
 ```Python
 ftr_champion_data = champion_data.loc[presence[presence > 20].index] # drop those champions that appeared less than 20 times out
 ftr_champion_data.shape
-(100, 20)
 ```
+>(100, 20)
 
-![](:/img/algorithm.png)
+![]:/img/algorithm.png
 
 ## 3. 英雄相似度
 
