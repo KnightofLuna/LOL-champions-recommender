@@ -323,9 +323,9 @@ HTML_show2(recom_team)
 
 |TOP|JUNGLE|MID|ADC|SUPPORT|Middle Score|Photo|
 |----|----|----|----|----|----|----|
-|Ornn|Lee Sin|Kassadin|Ashe|Yuumi|0.567791|<td><img src="https://gol.gg/_img/champions_icon/Ornn.png"></td><td><img src="https://gol.gg/_img/champions_icon/LeeSin.png"></td><td><img src="https://gol.gg/_img/champions_icon/Kassadin.png"></td><td><img src="https://gol.gg/_img/champions_icon/Ashe.png"></td><td><img src="https://gol.gg/_img/champions_icon/Yuumi.png"></td>|
-|Kled|Jarvan IV|Corki|Ashe|Yuumi|0.547773|<td><img src="https://gol.gg/_img/champions_icon/Kled.png"></td><td><img src="https://gol.gg/_img/champions_icon/JarvanIV.png"></td><td><img src="https://gol.gg/_img/champions_icon/Corki.png"></td><td><img src="https://gol.gg/_img/champions_icon/Ashe.png"></td><td><img src="https://gol.gg/_img/champions_icon/Yuumi.png"></td>|
-|Mordekaiser|Jarvan IV|Syndra|Ashe|Yuumi|0.544987|<td><img src="https://gol.gg/_img/champions_icon/Mordekaiser.png"></td><td><img src="https://gol.gg/_img/champions_icon/JarvanIV.png"></td><td><img src="https://gol.gg/_img/champions_icon/Syndra.png"></td><td><img src="https://gol.gg/_img/champions_icon/Ashe.png"></td><td><img src="https://gol.gg/_img/champions_icon/Yuumi.png"></td>|
+|Ornn|Lee Sin|Kassadin|Ashe|Yuumi|0.567791|<br><img src="https://gol.gg/_img/champions_icon/Ornn.png"><img src="https://gol.gg/_img/champions_icon/LeeSin.png"><img src="https://gol.gg/_img/champions_icon/Kassadin.png"><img src="https://gol.gg/_img/champions_icon/Ashe.png"><img src="https://gol.gg/_img/champions_icon/Yuumi.png"><br>|
+|Kled|Jarvan IV|Corki|Ashe|Yuumi|0.547773|<br><img src="https://gol.gg/_img/champions_icon/Kled.png"><img src="https://gol.gg/_img/champions_icon/JarvanIV.png"><img src="https://gol.gg/_img/champions_icon/Corki.png"><img src="https://gol.gg/_img/champions_icon/Ashe.png"><img src="https://gol.gg/_img/champions_icon/Yuumi.png"><br>|
+|Mordekaiser|Jarvan IV|Syndra|Ashe|Yuumi|0.544987|<br><img src="https://gol.gg/_img/champions_icon/Mordekaiser.png"><img src="https://gol.gg/_img/champions_icon/JarvanIV.png"><img src="https://gol.gg/_img/champions_icon/Syndra.png"><img src="https://gol.gg/_img/champions_icon/Ashe.png"><img src="https://gol.gg/_img/champions_icon/Yuumi.png"><br>|
 
 最后，我们整合前面的部分，得出一个终极版的推荐器。
 
