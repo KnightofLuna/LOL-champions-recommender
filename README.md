@@ -32,7 +32,7 @@ Moreover, this recommender consists of a score system based on the strength of c
 
 ### 例子
 
-1. 假如当前的阵容为：Sett（TOP），Ashe（ADC），其他英雄待选。推荐阵容数量为3，相似英雄数量为3，counters数量为2，评价方式为`Early-to-middle`。
+1. 假如当前的阵容为：Sett（TOP），Ashe（ADC），其他英雄待选。推荐阵容数量为3，相似英雄数量为3，克制英雄数量为2，评价方式为`Early-to-middle`（通过该时段的胜率评价阵容）。
 
 ```
 $ python recommender.py
@@ -66,11 +66,11 @@ SUPPORT Champion (null if skip):
 ```
 The expected number of teams to be recommended (1 if skip): 3
 ```
-8. 输入`3`作为相似英雄数量...
+8. 输入`3`作为每个英雄的相似者数量...
 ```
 The number of similars (1 if skip): 3
 ```
-9. 输入`2`作为counter英雄数量...
+9. 输入`2`作为每个英雄的克制者数量...
 ```
 The number of counters (1 if skip): 2
 ```
@@ -99,7 +99,7 @@ Early-to-middle Score
                       SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
 ```
 
-12. 解读：按照`Early-to-middle`的评价标准，即阵容前中期的评分，输出的阵容依次为`[TOP: Sett, JUNGLE: Olaf, MID: Ryze, ADC: Ashe, SUPPORT: Alistar]`，`[TOP: Sett, JUNGLE: Olaf, MID: Syndra, ADC: Ashe, SUPPORT: Thresh]`，`[TOP: Sett, JUNGLE: Olaf, MID: Azir, ADC: Ashe, SUPPORT: Thresh]`，其对应的评分分别为`0.541377`，`0.540333`，`0.538972`。其次，展示在每个英雄之后的有相似者和克制者。例如`Sett`的最相似的是`Ornn`，相似度为`1`，其次是`Kled`，相似度为`0.999`...`Sett`的最佳克制者为`Trundle`，克制率为`0.8`，其次为`LeBlanc`，克制率为`0.76`...其他英雄以此类推。
+12. 解读：按照`Early-to-middle`的评价标准，即阵容前中期的评分，输出的阵容依次为`[TOP: Sett, JUNGLE: Olaf, MID: Ryze, ADC: Ashe, SUPPORT: Alistar]`，`[TOP: Sett, JUNGLE: Olaf, MID: Syndra, ADC: Ashe, SUPPORT: Thresh]`，`[TOP: Sett, JUNGLE: Olaf, MID: Azir, ADC: Ashe, SUPPORT: Thresh]`，其对应的评分分别为`0.541377`，`0.540333`，`0.538972`。其次，展示在每个英雄之后的有相似者和克制者。例如`Sett`的最相似者是`Ornn`，相似度为`1`，其次是`Kled`，相似度为`0.999`...`Sett`的最佳克制者为`Trundle`，克制率为`0.8`，其次为`LeBlanc`，克制率为`0.76`...其他英雄以此类推。
 
 <a id="1"></a>
 ## 1. 写在前面
