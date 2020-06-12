@@ -139,7 +139,7 @@ ftr_champion_data.shape
 ```
 >(100, 20)
 
-![algorithm](:\img\algorithm.png "algorithm")
+![algorithm](./img/algorithm.png)
 
 ## 3. 英雄相似度
 
