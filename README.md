@@ -139,7 +139,10 @@ ftr_champion_data.shape
 ```
 >(100, 20)
 
-![algorithm](./img/algorithm.png)
+<p align="center">
+  <img src="./img/cluster_map.png">
+</p>
+
 
 ## 3. 英雄相似度
 
