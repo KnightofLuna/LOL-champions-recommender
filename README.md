@@ -4,12 +4,13 @@ This project purposed a League of Legends (LOL) recommender system for champions
 
 Moreover, this recommender consists of a score system based on the strength of champions in different phases for evaluating teams, a similarity evaluation for seeking alternative champions and a counter evaluation for detecting counters for each champion of a team. 
 
-## Version:
+## Version
 * 中文
 * English (to be implemented...)
 
-## 目录：
+## 目录
 
+* [使用方法](#使用方法)
 * [0. 写在前面](#0)
 * [1. 数据预览](#1)
 * [2. 数据处理和计算](#2)
@@ -21,7 +22,83 @@ Moreover, this recommender consists of a score system based on the strength of c
 * [4. 阵容评分](#4)
 * [5. 英雄克制](#5)
 * [6. 推荐器](#6)
-* [7. 使用方法](#7)
+
+## 使用方法
+
+1. 需要的包有`numpy`，`pandas`，`matplotlib`，`IPython`，`itertools`。
+
+2. 下载至本地后直接运行`recommender.py`文件，按照提示输入即可使用。
+
+### 例子
+
+1. 假如当前的阵容为：Sett（TOP），Ashe（ADC），其他英雄待选。推荐阵容数量为3，相似英雄数量为3，counters数量为2，评价方式为`Early-to-middle`。
+
+```
+$ python recommender.py
+All champions in the data set...
+
+['Aatrox', 'Akali', 'Alistar', 'Aphelios', 'Ashe', 'Azir', 'Bard', 'Blitzcrank', 'Braum', 'Caitlyn', 'Camille', 'Cassiopeia', 'Corki', 'Draven', 'Ekko', 'Elise', 'Ezreal', 'Fiora', 'Galio', 'Gangplank', 'Gnar', 'Gragas', 'Hecarim', 'Irelia', 'Jarvan IV', 'Jax', 'Jayce', 'Jinx', 'Kaisa', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Kayle', 'Kennen', 'KhaZix', 'Kindred', 'Kled', 'KogMaw', 'LeBlanc', 'Lee Sin', 'Leona', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Maokai', 'Miss Fortune', 'Mordekaiser', 'Morgana', 'Nautilus', 'Neeko', 'Nidalee', 'Nocturne', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 'Poppy', 'Pyke', 'Qiyana', 'Rakan', 'RekSai', 'Renekton', 'Riven', 'Rumble', 'Ryze', 'Sejuani', 'Senna', 'Sett', 'Shen', 'Sion', 'Sivir', 'Skarner', 'Sona', 'Soraka', 'Sylas', 'Syndra', 'Tahm Kench', 'Taliyah', 'Taric', 'Thresh', 'Tristana', 'Trundle', 'Urgot', 'Varus', 'Vayne', 'VelKoz', 'Viktor', 'Vladimir', 'Volibear', 'Wukong', 'Xayah', 'Xin Zhao', 'Yasuo', 'Yorick', 'Yuumi', 'Zac', 'Zilean', 'Zoe']
+
+At least input one champion...
+```
+2. 输入`Sett`作为TOP位置的英雄...
+```
+TOP Champion (null if skip): Sett
+```
+3. 回车跳过...
+```
+JUNGLE Champion (null if skip):
+```
+4. 回车跳过...
+```
+MID Champion (null if skip): Ashe
+```
+5. 输入`Ashe`作为ADC位置的英雄...
+```
+ADC Champion (null if skip): Ashe
+```
+6. 回车跳过...
+```
+SUPPORT Champion (null if skip): 
+```
+7. 输入`3`作为推荐阵容数量...
+```
+The expected number of teams to be recommended (1 if skip): 3
+```
+8. 输入`3`作为相似英雄数量...
+```
+The number of similars (1 if skip): 3
+```
+9. 输入`2`作为counter英雄数量...
+```
+The number of counters (1 if skip): 2
+```
+10. 输入`Early-to-middle`作为评价方式...
+```
+The phase (one of Early, Early-to-middle, Middle, Middle-to-late, Late) you concern for win (Middle if skip): Early-to-middle
+```
+11. 输出...
+```
+                              Champion                                    Top Similars & Similarity              Top Counters & Counter Rate
+Early-to-middle Score                                                                                                                       
+0.541377              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
+                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
+                      MID      Ryze     [(Kennen, 0.999), (Neeko, 0.999), (Lissandra, 0.998)]        [(Alistar, 0.759), (Gragas, 0.688)]    
+                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
+                      SUPPORT  Alistar  [(Tahm Kench, 0.998), (Skarner, 0.996), (Jarvan IV, 0.993)]  [(Rakan, 0.675), (Lissandra, 0.603)]   
+0.540333              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
+                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
+                      MID      Syndra   [(Caitlyn, 0.999), (VelKoz, 0.998), (KogMaw, 0.998)]         [(LeBlanc, 0.708), (Ryze, 0.63)]       
+                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
+                      SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
+0.538972              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
+                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
+                      MID      Azir     [(Corki, 0.999), (Orianna, 0.999), (Jayce, 0.998)]           [(Taric, 0.655), (Rakan, 0.652)]       
+                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
+                      SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
+```
+
+12. 解读：按照`Early-to-middle`的评价标准，即阵容前中期的评分，输出的阵容依次为`[TOP: Sett, JUNGLE: Olaf, MID: Ryze, ADC: Ashe, SUPPORT: Alistar]`，`[TOP: Sett, JUNGLE: Olaf, MID: Syndra, ADC: Ashe, SUPPORT: Thresh]`，`[TOP: Sett, JUNGLE: Olaf, MID: Azir, ADC: Ashe, SUPPORT: Thresh]`，其对应的评分分别为`0.541377`，`0.540333`，`0.538972`。其次，展示在每个英雄之后的有相似者和克制者。例如`Sett`的最相似的是`Ornn`，相似度为`1`，其次是`Kled`，相似度为`0.999`...`Sett`的最佳克制者为`Trundle`，克制率为`0.8`，其次为`LeBlanc`，克制率为`0.76`...其他英雄以此类推。
 
 <a id="0"></a>
 ## 0. 写在前面
@@ -160,10 +237,6 @@ ftr_champion_data = champion_data.loc[presence[presence > 20].index] # drop thos
 ftr_champion_data.shape
 > (100, 20)
 ```
-
-<p align="center">
-  <img src="./img/cluster_map.png">
-</p>
 
 <a id="3"></a>
 ## 3. 英雄相似度
@@ -384,79 +457,3 @@ def merged_recommender(top=False, jun=False, mid=False, adc=False, sup=False,
     copy['Top Counters & Counter Rate'] = [list(zip(counters[i],counterrate[i])) for i in range(len(counters))]
     return copy
 ```
-
-<a id="7"></a>
-## 7. 使用方法
-
-直接运行`recommender.py`文件，按照提示输入即可使用。
-
-### 例子
-
-1. 假如当前的阵容为：Sett（TOP），Ashe（ADC），其他英雄待选。推荐阵容数量为3，相似英雄数量为3，counters数量为2，评价方式为`Early-to-middle`。
-
-```
-$ python recommender.py
-All champions in the data set...
-
-['Aatrox', 'Akali', 'Alistar', 'Aphelios', 'Ashe', 'Azir', 'Bard', 'Blitzcrank', 'Braum', 'Caitlyn', 'Camille', 'Cassiopeia', 'Corki', 'Draven', 'Ekko', 'Elise', 'Ezreal', 'Fiora', 'Galio', 'Gangplank', 'Gnar', 'Gragas', 'Hecarim', 'Irelia', 'Jarvan IV', 'Jax', 'Jayce', 'Jinx', 'Kaisa', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Kayle', 'Kennen', 'KhaZix', 'Kindred', 'Kled', 'KogMaw', 'LeBlanc', 'Lee Sin', 'Leona', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Maokai', 'Miss Fortune', 'Mordekaiser', 'Morgana', 'Nautilus', 'Neeko', 'Nidalee', 'Nocturne', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 'Poppy', 'Pyke', 'Qiyana', 'Rakan', 'RekSai', 'Renekton', 'Riven', 'Rumble', 'Ryze', 'Sejuani', 'Senna', 'Sett', 'Shen', 'Sion', 'Sivir', 'Skarner', 'Sona', 'Soraka', 'Sylas', 'Syndra', 'Tahm Kench', 'Taliyah', 'Taric', 'Thresh', 'Tristana', 'Trundle', 'Urgot', 'Varus', 'Vayne', 'VelKoz', 'Viktor', 'Vladimir', 'Volibear', 'Wukong', 'Xayah', 'Xin Zhao', 'Yasuo', 'Yorick', 'Yuumi', 'Zac', 'Zilean', 'Zoe']
-
-At least input one champion...
-```
-2. 输入`Sett`作为TOP位置的英雄...
-```
-TOP Champion (null if skip): Sett
-```
-3. 回车跳过...
-```
-JUNGLE Champion (null if skip):
-```
-4. 回车跳过...
-```
-MID Champion (null if skip): Ashe
-```
-5. 输入`Ashe`作为ADC位置的英雄...
-```
-ADC Champion (null if skip): Ashe
-```
-6. 回车跳过...
-```
-SUPPORT Champion (null if skip): 
-```
-7. 输入`3`作为推荐阵容数量...
-```
-The expected number of teams to be recommended (1 if skip): 3
-```
-8. 输入`3`作为相似英雄数量...
-```
-The number of similars (1 if skip): 3
-```
-9. 输入`2`作为counter英雄数量...
-```
-The number of counters (1 if skip): 2
-```
-10. 输入`Early-to-middle`作为评价方式...
-```
-The phase (one of Early, Early-to-middle, Middle, Middle-to-late, Late) you concern for win (Middle if skip): Early-to-middle
-```
-11. 输出...
-```
-                              Champion                                    Top Similars & Similarity              Top Counters & Counter Rate
-Early-to-middle Score                                                                                                                       
-0.541377              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
-                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
-                      MID      Ryze     [(Kennen, 0.999), (Neeko, 0.999), (Lissandra, 0.998)]        [(Alistar, 0.759), (Gragas, 0.688)]    
-                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
-                      SUPPORT  Alistar  [(Tahm Kench, 0.998), (Skarner, 0.996), (Jarvan IV, 0.993)]  [(Rakan, 0.675), (Lissandra, 0.603)]   
-0.540333              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
-                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
-                      MID      Syndra   [(Caitlyn, 0.999), (VelKoz, 0.998), (KogMaw, 0.998)]         [(LeBlanc, 0.708), (Ryze, 0.63)]       
-                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
-                      SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
-0.538972              TOP      Sett     [(Ornn, 1.0), (Kled, 0.999), (Poppy, 0.998)]                 [(Trundle, 0.8), (LeBlanc, 0.76)]      
-                      JUNGLE   Olaf     [(Hecarim, 0.997), (Nocturne, 0.997), (KhaZix, 0.995)]       [(Elise, 0.636), (LeBlanc, 0.619)]     
-                      MID      Azir     [(Corki, 0.999), (Orianna, 0.999), (Jayce, 0.998)]           [(Taric, 0.655), (Rakan, 0.652)]       
-                      ADC      Ashe     [(Caitlyn, 1.0), (Sivir, 0.999), (Jinx, 0.999)]              [(Sylas, 0.762), (RekSai, 0.714)]      
-                      SUPPORT  Thresh   [(Nautilus, 0.996), (Blitzcrank, 0.995), (Shen, 0.994)]      [(Tahm Kench, 0.661), (Sejuani, 0.645)]
-```
-
-12. 解读：按照`Early-to-middle`的评价标准，即阵容前中期的评分，输出的阵容依次为`[TOP: Sett, JUNGLE: Olaf, MID: Ryze, ADC: Ashe, SUPPORT: Alistar]`，`[TOP: Sett, JUNGLE: Olaf, MID: Syndra, ADC: Ashe, SUPPORT: Thresh]`，`[TOP: Sett, JUNGLE: Olaf, MID: Azir, ADC: Ashe, SUPPORT: Thresh]`，其对应的评分分别为`0.541377`，`0.540333`，`0.538972`。其次，展示在每个英雄之后的有相似者和克制者。例如`Sett`的最相似的是`Ornn`，相似度为`1`，其次是`Kled`，相似度为`0.999`...`Sett`的最佳克制者为`Trundle`，克制率为`0.8`，其次为`LeBlanc`，克制率为`0.76`...其他英雄以此类推。
